@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+
+    <!-- Outer ring -->
+    <path
+        android:pathData="M54,27 A27,27 0 1,1 53.99,27"
+        android:strokeWidth="3"
+        android:strokeColor="#4FC3F7"
+        android:fillColor="#00000000"/>
+
+    <!-- Middle ring -->
+    <path
+        android:pathData="M54,35 A19,19 0 1,1 53.99,35"
+        android:strokeWidth="2.5"
+        android:strokeColor="#29B6F6"
+        android:fillColor="#00000000"/>
+
+    <!-- Inner filled circle -->
+    <path
+        android:pathData="M54,43 A11,11 0 1,1 53.99,43"
+        android:fillColor="#03A9F4"/>
+
+    <!-- Play triangle -->
+    <path
+        android:pathData="M51,49 L51,59 L59,54 Z"
+        android:fillColor="#FFFFFF"/>
+
+</vector>
