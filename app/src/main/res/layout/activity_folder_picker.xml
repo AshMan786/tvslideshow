@@ -37,8 +37,10 @@
             android:id="@+id/image_count_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="14sp"
-            android:textColor="#4FC3F7"
+            android:textSize="16sp"
+            android:textColor="#FFFFFF"
+            android:background="#CC000000"
+            android:padding="12dp"
             android:layout_marginStart="16dp" />
 
     </LinearLayout>

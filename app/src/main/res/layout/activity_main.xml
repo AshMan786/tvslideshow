@@ -2,38 +2,31 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/settings_background">
+    android:background="@drawable/tvslideshow">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="horizontal"
-        android:padding="32dp"
-        android:gravity="center_vertical">
+        android:padding="32dp">
 
-        <!-- Left side - Branding (smaller) -->
+        <!-- Left spacer (empty half) -->
+        <View
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1" />
+
+        <!-- Right side - Settings -->
         <LinearLayout
-            android:layout_width="280dp"
-            android:layout_height="wrap_content"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
             android:orientation="vertical"
             android:gravity="center"
-            android:paddingEnd="24dp">
+            android:background="#33000000"
+            android:paddingStart="24dp">
 
-            <View
-                android:layout_width="80dp"
-                android:layout_height="80dp"
-                android:background="@drawable/splash_icon"
-                android:layout_marginBottom="24dp" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/app_name"
-                android:textSize="28sp"
-                android:textColor="#FFFFFF"
-                android:fontFamily="sans-serif-light"
-                android:gravity="center" />
-
+            <!-- Status text -->
             <TextView
                 android:id="@+id/status_text"
                 android:layout_width="wrap_content"
@@ -41,18 +34,7 @@
                 android:textSize="14sp"
                 android:textColor="#4FC3F7"
                 android:gravity="center"
-                android:layout_marginTop="12dp" />
-
-        </LinearLayout>
-
-        <!-- Right side - Settings Cards (takes remaining space) -->
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:orientation="vertical"
-            android:gravity="center"
-            android:paddingStart="24dp">
+                android:layout_marginBottom="16dp" />
 
             <!-- Folder Selection Card -->
             <LinearLayout
@@ -60,78 +42,106 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:background="@drawable/card_background"
-                android:padding="24dp"
-                android:layout_marginBottom="16dp">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/folder_path_label"
-                    android:textSize="14sp"
-                    android:textColor="#80FFFFFF"
-                    android:fontFamily="sans-serif-medium"
-                    android:textAllCaps="true"
-                    android:letterSpacing="0.1" />
+                android:padding="16dp"
+                android:layout_marginBottom="12dp">
 
                 <TextView
                     android:id="@+id/folder_path_text"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="No folder selected"
-                    android:textSize="16sp"
+                    android:textSize="14sp"
                     android:textColor="#FFFFFF"
                     android:singleLine="true"
                     android:ellipsize="middle"
-                    android:layout_marginTop="8dp"
-                    android:layout_marginBottom="16dp" />
+                    android:layout_marginBottom="12dp" />
 
                 <Button
                     android:id="@+id/browse_button"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/browse_folder"
-                    android:textSize="16sp"
+                    android:textSize="14sp"
                     android:textColor="#FFFFFF"
                     android:background="@drawable/button_secondary"
-                    android:paddingVertical="12dp"
+                    android:paddingVertical="10dp"
                     android:focusable="true" />
 
             </LinearLayout>
 
-            <!-- Delay Setting Card -->
+            <!-- Settings Row: Delay and Order -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:background="@drawable/card_background"
-                android:padding="24dp"
-                android:layout_marginBottom="16dp">
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:layout_marginBottom="12dp">
 
-                <TextView
-                    android:layout_width="wrap_content"
+                <!-- Delay -->
+                <LinearLayout
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:text="@string/delay_label"
-                    android:textSize="14sp"
-                    android:textColor="#80FFFFFF"
-                    android:fontFamily="sans-serif-medium"
-                    android:textAllCaps="true"
-                    android:letterSpacing="0.1" />
-
-                <EditText
-                    android:id="@+id/delay_edit"
-                    android:layout_width="120dp"
-                    android:layout_height="wrap_content"
-                    android:hint="5"
-                    android:inputType="number"
-                    android:textSize="24sp"
-                    android:textColor="#FFFFFF"
-                    android:textColorHint="#60FFFFFF"
-                    android:background="@drawable/edittext_background"
+                    android:layout_weight="1"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:background="@drawable/card_background"
                     android:padding="12dp"
-                    android:gravity="center"
-                    android:layout_marginTop="8dp"
-                    android:focusable="true"
-                    android:focusableInTouchMode="true" />
+                    android:layout_marginEnd="8dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/delay_label"
+                        android:textSize="14sp"
+                        android:textColor="#FFFFFF"
+                        android:layout_marginEnd="12dp" />
+
+                    <EditText
+                        android:id="@+id/delay_edit"
+                        android:layout_width="80dp"
+                        android:layout_height="wrap_content"
+                        android:hint="5"
+                        android:inputType="number"
+                        android:textSize="18sp"
+                        android:textColor="#FFFFFF"
+                        android:textColorHint="#60FFFFFF"
+                        android:background="@drawable/edittext_background"
+                        android:padding="8dp"
+                        android:gravity="center"
+                        android:focusable="true"
+                        android:focusableInTouchMode="true" />
+
+                </LinearLayout>
+
+                <!-- Order -->
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:background="@drawable/card_background"
+                    android:padding="12dp"
+                    android:layout_marginStart="8dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/display_order_label"
+                        android:textSize="14sp"
+                        android:textColor="#FFFFFF"
+                        android:layout_marginEnd="12dp" />
+
+                    <Spinner
+                        android:id="@+id/order_spinner"
+                        android:layout_width="0dp"
+                        android:layout_height="40dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/edittext_background"
+                        android:popupBackground="#333333"
+                        android:focusable="true" />
+
+                </LinearLayout>
 
             </LinearLayout>
 
@@ -141,11 +151,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/include_subfolders"
-                android:textSize="16sp"
+                android:textSize="14sp"
                 android:textColor="#FFFFFF"
                 android:buttonTint="#4FC3F7"
-                android:padding="16dp"
-                android:layout_marginBottom="24dp"
+                android:padding="12dp"
+                android:layout_marginBottom="16dp"
                 android:focusable="true" />
 
             <!-- Start Button -->
@@ -154,11 +164,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/start_slideshow"
-                android:textSize="18sp"
+                android:textSize="16sp"
                 android:textColor="#FFFFFF"
                 android:fontFamily="sans-serif-medium"
                 android:background="@drawable/button_primary"
-                android:paddingVertical="16dp"
+                android:paddingVertical="14dp"
                 android:focusable="true" />
 
         </LinearLayout>

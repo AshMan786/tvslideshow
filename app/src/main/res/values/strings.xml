@@ -10,4 +10,10 @@
     <string name="select_folder_title">Select Image Folder</string>
     <string name="select_this_folder">Select This Folder</string>
     <string name="include_subfolders">Include images from subfolders</string>
+    <string name="display_order_label">Order:</string>
+    <string-array name="display_order_options">
+        <item>Random</item>
+        <item>Date (Oldest First)</item>
+        <item>Date (Newest First)</item>
+    </string-array>
 </resources>

@@ -7,9 +7,14 @@ import android.os.Build
 import android.os.Bundle
 import android.os.Environment
 import android.provider.Settings
+import android.view.View
+import android.view.ViewGroup
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.CheckBox
 import android.widget.EditText
+import android.widget.Spinner
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.ComponentActivity
@@ -25,6 +30,7 @@ class MainActivity : ComponentActivity() {
     private lateinit var browseButton: Button
     private lateinit var delayEdit: EditText
     private lateinit var subfoldersCheckbox: CheckBox
+    private lateinit var orderSpinner: Spinner
     private lateinit var startButton: Button
     private lateinit var statusText: TextView
 
@@ -71,6 +77,34 @@ class MainActivity : ComponentActivity() {
         subfoldersCheckbox.setOnCheckedChangeListener { _, isChecked ->
             SlideshowPrefs.setIncludeSubfolders(this, isChecked)
             updateUI()
+        }
+
+        // Setup order spinner
+        orderSpinner = findViewById(R.id.order_spinner)
+        val orderOptions = resources.getStringArray(R.array.display_order_options)
+        val spinnerAdapter = object : ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, orderOptions) {
+            override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
+                val view = super.getView(position, convertView, parent)
+                (view as TextView).setTextColor(0xFFFFFFFF.toInt())
+                view.textSize = 16f
+                return view
+            }
+            override fun getDropDownView(position: Int, convertView: View?, parent: ViewGroup): View {
+                val view = super.getDropDownView(position, convertView, parent)
+                (view as TextView).setTextColor(0xFFFFFFFF.toInt())
+                view.setBackgroundColor(0xFF333333.toInt())
+                view.setPadding(32, 24, 32, 24)
+                return view
+            }
+        }
+        spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        orderSpinner.adapter = spinnerAdapter
+        orderSpinner.setSelection(SlideshowPrefs.getDisplayOrder(this))
+        orderSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                SlideshowPrefs.setDisplayOrder(this@MainActivity, position)
+            }
+            override fun onNothingSelected(parent: AdapterView<*>?) {}
         }
 
         browseButton.setOnClickListener {

@@ -37,4 +37,5 @@ android {
 dependencies {
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.activity.ktx)
+    implementation("androidx.exifinterface:exifinterface:1.3.7")
 }
