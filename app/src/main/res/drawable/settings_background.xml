@@ -1,9 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
-<shape xmlns:android="http://schemas.android.com/apk/res/android">
-    <gradient
-        android:type="linear"
-        android:angle="135"
-        android:startColor="#0d1b2a"
-        android:centerColor="#1b263b"
-        android:endColor="#0d1b2a" />
-</shape>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Deep obsidian base -->
+    <item>
+        <shape android:shape="rectangle">
+            <solid android:color="@color/background_primary" />
+        </shape>
+    </item>
+
+    <!-- Subtle diagonal gradient for depth -->
+    <item>
+        <shape android:shape="rectangle">
+            <gradient
+                android:type="linear"
+                android:angle="135"
+                android:startColor="#00000000"
+                android:centerColor="#08FFFFFF"
+                android:endColor="#00000000" />
+        </shape>
+    </item>
+
+    <!-- Warm glow from left side -->
+    <item>
+        <shape android:shape="rectangle">
+            <gradient
+                android:type="radial"
+                android:gradientRadius="600dp"
+                android:centerX="0.0"
+                android:centerY="0.5"
+                android:startColor="#15D4A855"
+                android:endColor="#00000000" />
+        </shape>
+    </item>
+
+    <!-- Subtle rose accent bottom right -->
+    <item>
+        <shape android:shape="rectangle">
+            <gradient
+                android:type="radial"
+                android:gradientRadius="400dp"
+                android:centerX="1.0"
+                android:centerY="1.0"
+                android:startColor="#0CE8B4B8"
+                android:endColor="#00000000" />
+        </shape>
+    </item>
+</layer-list>

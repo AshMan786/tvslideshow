@@ -1,6 +1,24 @@
 <resources>
+    <!-- Cinematic Luxury Theme for TV Slideshow -->
     <style name="Theme.TVSlideshow" parent="android:Theme.Material.NoActionBar">
+        <!-- Fullscreen immersive experience -->
         <item name="android:windowFullscreen">true</item>
         <item name="android:windowContentOverlay">@null</item>
+
+        <!-- Color scheme -->
+        <item name="android:colorPrimary">@color/accent_gold</item>
+        <item name="android:colorPrimaryDark">@color/accent_gold_muted</item>
+        <item name="android:colorAccent">@color/accent_gold</item>
+
+        <!-- Window background -->
+        <item name="android:windowBackground">@color/background_primary</item>
+
+        <!-- Text colors -->
+        <item name="android:textColorPrimary">@color/text_primary</item>
+        <item name="android:textColorSecondary">@color/text_secondary</item>
+
+        <!-- Navigation bar styling for modern devices -->
+        <item name="android:navigationBarColor">@color/background_primary</item>
+        <item name="android:statusBarColor">@color/background_primary</item>
     </style>
 </resources>

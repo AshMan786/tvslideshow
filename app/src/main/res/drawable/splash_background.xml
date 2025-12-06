@@ -1,10 +1,48 @@
 <?xml version="1.0" encoding="utf-8"?>
-<shape xmlns:android="http://schemas.android.com/apk/res/android">
-    <gradient
-        android:type="radial"
-        android:gradientRadius="600dp"
-        android:centerX="0.5"
-        android:centerY="0.4"
-        android:startColor="#1a237e"
-        android:endColor="#0d0d0d" />
-</shape>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Base deep obsidian -->
+    <item>
+        <shape android:shape="rectangle">
+            <solid android:color="@color/background_primary" />
+        </shape>
+    </item>
+
+    <!-- Warm burgundy radial glow - upper left -->
+    <item>
+        <shape android:shape="rectangle">
+            <gradient
+                android:type="radial"
+                android:gradientRadius="800dp"
+                android:centerX="0.2"
+                android:centerY="0.3"
+                android:startColor="#20D4A855"
+                android:endColor="#00000000" />
+        </shape>
+    </item>
+
+    <!-- Golden ambient glow - center -->
+    <item>
+        <shape android:shape="rectangle">
+            <gradient
+                android:type="radial"
+                android:gradientRadius="600dp"
+                android:centerX="0.5"
+                android:centerY="0.5"
+                android:startColor="#15A68B4B"
+                android:endColor="#00000000" />
+        </shape>
+    </item>
+
+    <!-- Subtle rose accent - lower right -->
+    <item>
+        <shape android:shape="rectangle">
+            <gradient
+                android:type="radial"
+                android:gradientRadius="500dp"
+                android:centerX="0.8"
+                android:centerY="0.7"
+                android:startColor="#10E8B4B8"
+                android:endColor="#00000000" />
+        </shape>
+    </item>
+</layer-list>

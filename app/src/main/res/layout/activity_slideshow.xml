@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!-- Cinematic Slideshow Display -->
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#000000">
+    android:background="@color/background_primary">
 
-    <!-- Two ImageViews for crossfade effect -->
+    <!-- Two ImageViews for smooth crossfade transitions -->
     <ImageView
         android:id="@+id/slideshow_image1"
         android:layout_width="match_parent"
@@ -20,38 +21,103 @@
         android:alpha="0"
         android:contentDescription="@string/slideshow_image_desc" />
 
+    <!-- Elegant Controls Overlay -->
     <LinearLayout
         android:id="@+id/controls_overlay"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="top"
         android:orientation="horizontal"
-        android:padding="24dp"
-        android:background="#80000000"
+        android:gravity="center_vertical"
+        android:paddingHorizontal="40dp"
+        android:paddingVertical="20dp"
+        android:background="@drawable/overlay_controls_background"
         android:visibility="gone">
 
-        <TextView
-            android:id="@+id/image_count_text"
+        <!-- Left: Image counter with golden accent -->
+        <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:textSize="18sp"
-            android:textColor="#ffffff" />
+            android:orientation="horizontal"
+            android:gravity="center_vertical">
 
-        <TextView
-            android:id="@+id/delay_text"
+            <View
+                android:layout_width="3dp"
+                android:layout_height="24dp"
+                android:background="@color/accent_gold"
+                android:layout_marginEnd="12dp" />
+
+            <TextView
+                android:id="@+id/image_count_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="16sp"
+                android:textColor="@color/text_primary"
+                android:fontFamily="sans-serif-light" />
+
+        </LinearLayout>
+
+        <!-- Center: Delay info -->
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="18sp"
-            android:textColor="#ffffff"
-            android:layout_marginEnd="24dp" />
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:background="@drawable/card_background"
+            android:paddingHorizontal="16dp"
+            android:paddingVertical="8dp">
+
+            <TextView
+                android:id="@+id/delay_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="14sp"
+                android:textColor="@color/text_secondary"
+                android:fontFamily="sans-serif" />
+
+        </LinearLayout>
+
+        <!-- Right: Status with elegant styling -->
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="horizontal"
+            android:gravity="center_vertical|end">
+
+            <TextView
+                android:id="@+id/slideshow_status_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="14sp"
+                android:textColor="@color/accent_gold"
+                android:fontFamily="sans-serif-medium"
+                android:letterSpacing="0.05" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <!-- Bottom hint bar (shows briefly on start) -->
+    <LinearLayout
+        android:id="@+id/hint_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:paddingVertical="16dp"
+        android:background="#60000000"
+        android:visibility="gone">
 
         <TextView
-            android:id="@+id/slideshow_status_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="18sp"
-            android:textColor="#ffffff" />
+            android:text="Press UP for controls"
+            android:textSize="13sp"
+            android:textColor="@color/text_tertiary"
+            android:fontFamily="sans-serif-light" />
 
     </LinearLayout>
 

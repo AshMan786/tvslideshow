@@ -1,32 +1,45 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!-- Golden Aperture App Icon - Cinematic Luxury Design -->
 <vector xmlns:android="http://schemas.android.com/apk/res/android"
     android:width="108dp"
     android:height="108dp"
     android:viewportWidth="108"
     android:viewportHeight="108">
 
-    <!-- Outer ring -->
+    <!-- Outer glow ring -->
     <path
-        android:pathData="M54,27 A27,27 0 1,1 53.99,27"
+        android:pathData="M54,24 A30,30 0 1,1 53.99,24"
+        android:strokeWidth="1"
+        android:strokeColor="#40D4A855"
+        android:fillColor="#00000000"/>
+
+    <!-- Outer aperture ring - Gold -->
+    <path
+        android:pathData="M54,28 A26,26 0 1,1 53.99,28"
         android:strokeWidth="3"
-        android:strokeColor="#4FC3F7"
+        android:strokeColor="#D4A855"
         android:fillColor="#00000000"/>
 
-    <!-- Middle ring -->
+    <!-- Middle ring - Rose gold -->
     <path
-        android:pathData="M54,35 A19,19 0 1,1 53.99,35"
-        android:strokeWidth="2.5"
-        android:strokeColor="#29B6F6"
+        android:pathData="M54,38 A16,16 0 1,1 53.99,38"
+        android:strokeWidth="2"
+        android:strokeColor="#E8B4B8"
         android:fillColor="#00000000"/>
 
-    <!-- Inner filled circle -->
+    <!-- Inner lens circle - Golden gradient simulation -->
     <path
-        android:pathData="M54,43 A11,11 0 1,1 53.99,43"
-        android:fillColor="#03A9F4"/>
+        android:pathData="M54,46 A8,8 0 1,1 53.99,46"
+        android:fillColor="#E8C47C"/>
 
-    <!-- Play triangle -->
+    <!-- Lens highlight -->
     <path
-        android:pathData="M51,49 L51,59 L59,54 Z"
-        android:fillColor="#FFFFFF"/>
+        android:pathData="M50,50 A3,3 0 1,1 49.99,50"
+        android:fillColor="#40FFFFFF"/>
+
+    <!-- Play triangle - Dark for contrast -->
+    <path
+        android:pathData="M52,51 L52,57 L57,54 Z"
+        android:fillColor="#0A0A0B"/>
 
 </vector>

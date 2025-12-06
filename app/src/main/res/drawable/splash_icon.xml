@@ -1,35 +1,75 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!-- Golden Camera Aperture Icon - Cinematic Luxury Design -->
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
-    <!-- Outer ring -->
-    <item>
+
+    <!-- Outer glow ring -->
+    <item
+        android:left="0dp"
+        android:top="0dp"
+        android:right="0dp"
+        android:bottom="0dp">
         <shape android:shape="oval">
             <stroke
-                android:width="2dp"
-                android:color="#4FC3F7" />
+                android:width="1dp"
+                android:color="#30D4A855" />
             <solid android:color="#00000000" />
         </shape>
     </item>
-    <!-- Middle ring -->
+
+    <!-- Outer aperture blade ring -->
     <item
-        android:left="20dp"
-        android:top="20dp"
-        android:right="20dp"
-        android:bottom="20dp">
+        android:left="8dp"
+        android:top="8dp"
+        android:right="8dp"
+        android:bottom="8dp">
         <shape android:shape="oval">
             <stroke
-                android:width="2dp"
-                android:color="#29B6F6" />
+                android:width="3dp"
+                android:color="@color/accent_gold" />
             <solid android:color="#00000000" />
         </shape>
     </item>
-    <!-- Inner filled circle -->
+
+    <!-- Middle ring with rose gold accent -->
     <item
-        android:left="40dp"
-        android:top="40dp"
-        android:right="40dp"
-        android:bottom="40dp">
+        android:left="24dp"
+        android:top="24dp"
+        android:right="24dp"
+        android:bottom="24dp">
         <shape android:shape="oval">
-            <solid android:color="#03A9F4" />
+            <stroke
+                android:width="2dp"
+                android:color="@color/accent_rose" />
+            <solid android:color="#00000000" />
         </shape>
     </item>
+
+    <!-- Inner golden circle - the "lens" -->
+    <item
+        android:left="38dp"
+        android:top="38dp"
+        android:right="38dp"
+        android:bottom="38dp">
+        <shape android:shape="oval">
+            <gradient
+                android:type="radial"
+                android:gradientRadius="42dp"
+                android:centerX="0.4"
+                android:centerY="0.4"
+                android:startColor="@color/accent_gold_bright"
+                android:endColor="@color/accent_gold" />
+        </shape>
+    </item>
+
+    <!-- Lens highlight -->
+    <item
+        android:left="44dp"
+        android:top="44dp"
+        android:right="56dp"
+        android:bottom="56dp">
+        <shape android:shape="oval">
+            <solid android:color="#40FFFFFF" />
+        </shape>
+    </item>
+
 </layer-list>

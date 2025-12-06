@@ -1,40 +1,95 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!-- Cinematic Luxury Settings Screen -->
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/tvslideshow">
+    android:background="@drawable/main_background">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="horizontal"
-        android:padding="32dp">
+        android:orientation="horizontal">
 
-        <!-- Left spacer (empty half) -->
-        <View
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1" />
-
-        <!-- Right side - Settings -->
+        <!-- Left side - Branding area with elegant typography -->
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:orientation="vertical"
             android:gravity="center"
-            android:background="#33000000"
-            android:paddingStart="24dp">
+            android:paddingStart="48dp"
+            android:paddingEnd="24dp">
+
+            <!-- App Icon -->
+            <View
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:background="@drawable/splash_icon"
+                android:layout_marginBottom="24dp" />
+
+            <!-- App Title -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/app_name"
+                android:textSize="36sp"
+                android:textColor="@color/text_primary"
+                android:fontFamily="serif"
+                android:letterSpacing="0.1" />
+
+            <!-- Golden divider -->
+            <View
+                android:layout_width="60dp"
+                android:layout_height="2dp"
+                android:background="@drawable/divider_gold"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="16dp" />
+
+            <!-- Tagline -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/splash_subtitle"
+                android:textSize="14sp"
+                android:textColor="@color/text_tertiary"
+                android:fontFamily="sans-serif-light"
+                android:letterSpacing="0.05" />
+
+        </LinearLayout>
+
+        <!-- Right side - Settings Panel -->
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:gravity="center_vertical"
+            android:background="@drawable/settings_panel_background"
+            android:paddingStart="40dp"
+            android:paddingEnd="48dp"
+            android:paddingTop="32dp"
+            android:paddingBottom="32dp">
+
+            <!-- Section Title -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Settings"
+                android:textSize="24sp"
+                android:textColor="@color/accent_gold"
+                android:fontFamily="sans-serif-light"
+                android:letterSpacing="0.1"
+                android:layout_marginBottom="8dp" />
 
             <!-- Status text -->
             <TextView
                 android:id="@+id/status_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="14sp"
-                android:textColor="#4FC3F7"
-                android:gravity="center"
-                android:layout_marginBottom="16dp" />
+                android:textSize="13sp"
+                android:textColor="@color/text_secondary"
+                android:fontFamily="sans-serif"
+                android:layout_marginBottom="24dp" />
 
             <!-- Folder Selection Card -->
             <LinearLayout
@@ -42,19 +97,31 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:background="@drawable/card_background"
-                android:padding="16dp"
-                android:layout_marginBottom="12dp">
+                android:padding="20dp"
+                android:layout_marginBottom="16dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Image Folder"
+                    android:textSize="12sp"
+                    android:textColor="@color/accent_gold_muted"
+                    android:fontFamily="sans-serif-medium"
+                    android:letterSpacing="0.1"
+                    android:textAllCaps="true"
+                    android:layout_marginBottom="8dp" />
 
                 <TextView
                     android:id="@+id/folder_path_text"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="No folder selected"
-                    android:textSize="14sp"
-                    android:textColor="#FFFFFF"
+                    android:textSize="15sp"
+                    android:textColor="@color/text_primary"
+                    android:fontFamily="sans-serif"
                     android:singleLine="true"
                     android:ellipsize="middle"
-                    android:layout_marginBottom="12dp" />
+                    android:layout_marginBottom="16dp" />
 
                 <Button
                     android:id="@+id/browse_button"
@@ -62,9 +129,11 @@
                     android:layout_height="wrap_content"
                     android:text="@string/browse_folder"
                     android:textSize="14sp"
-                    android:textColor="#FFFFFF"
+                    android:textColor="@color/text_primary"
+                    android:fontFamily="sans-serif-medium"
                     android:background="@drawable/button_secondary"
-                    android:paddingVertical="10dp"
+                    android:backgroundTint="@null"
+                    android:paddingVertical="12dp"
                     android:focusable="true" />
 
             </LinearLayout>
@@ -74,71 +143,89 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:gravity="center_vertical"
-                android:layout_marginBottom="12dp">
+                android:layout_marginBottom="16dp">
 
-                <!-- Delay -->
+                <!-- Delay Card -->
                 <LinearLayout
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:orientation="horizontal"
-                    android:gravity="center_vertical"
+                    android:orientation="vertical"
                     android:background="@drawable/card_background"
-                    android:padding="12dp"
+                    android:padding="16dp"
                     android:layout_marginEnd="8dp">
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/delay_label"
-                        android:textSize="14sp"
-                        android:textColor="#FFFFFF"
-                        android:layout_marginEnd="12dp" />
+                        android:text="Delay"
+                        android:textSize="11sp"
+                        android:textColor="@color/accent_gold_muted"
+                        android:fontFamily="sans-serif-medium"
+                        android:letterSpacing="0.1"
+                        android:textAllCaps="true"
+                        android:layout_marginBottom="8dp" />
 
-                    <EditText
-                        android:id="@+id/delay_edit"
-                        android:layout_width="80dp"
+                    <LinearLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="5"
-                        android:inputType="number"
-                        android:textSize="18sp"
-                        android:textColor="#FFFFFF"
-                        android:textColorHint="#60FFFFFF"
-                        android:background="@drawable/edittext_background"
-                        android:padding="8dp"
-                        android:gravity="center"
-                        android:focusable="true"
-                        android:focusableInTouchMode="true" />
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical">
+
+                        <EditText
+                            android:id="@+id/delay_edit"
+                            android:layout_width="70dp"
+                            android:layout_height="wrap_content"
+                            android:hint="5"
+                            android:inputType="number"
+                            android:textSize="20sp"
+                            android:textColor="@color/text_primary"
+                            android:textColorHint="@color/text_disabled"
+                            android:background="@drawable/edittext_background"
+                            android:padding="10dp"
+                            android:gravity="center"
+                            android:focusable="true"
+                            android:focusableInTouchMode="true" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="seconds"
+                            android:textSize="13sp"
+                            android:textColor="@color/text_tertiary"
+                            android:layout_marginStart="12dp" />
+
+                    </LinearLayout>
 
                 </LinearLayout>
 
-                <!-- Order -->
+                <!-- Order Card -->
                 <LinearLayout
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:orientation="horizontal"
-                    android:gravity="center_vertical"
+                    android:orientation="vertical"
                     android:background="@drawable/card_background"
-                    android:padding="12dp"
+                    android:padding="16dp"
                     android:layout_marginStart="8dp">
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/display_order_label"
-                        android:textSize="14sp"
-                        android:textColor="#FFFFFF"
-                        android:layout_marginEnd="12dp" />
+                        android:text="Display Order"
+                        android:textSize="11sp"
+                        android:textColor="@color/accent_gold_muted"
+                        android:fontFamily="sans-serif-medium"
+                        android:letterSpacing="0.1"
+                        android:textAllCaps="true"
+                        android:layout_marginBottom="8dp" />
 
                     <Spinner
                         android:id="@+id/order_spinner"
-                        android:layout_width="0dp"
-                        android:layout_height="40dp"
-                        android:layout_weight="1"
+                        android:layout_width="match_parent"
+                        android:layout_height="44dp"
                         android:background="@drawable/edittext_background"
-                        android:popupBackground="#333333"
+                        android:popupBackground="@color/background_card"
                         android:focusable="true" />
 
                 </LinearLayout>
@@ -152,23 +239,25 @@
                 android:layout_height="wrap_content"
                 android:text="@string/include_subfolders"
                 android:textSize="14sp"
-                android:textColor="#FFFFFF"
-                android:buttonTint="#4FC3F7"
+                android:textColor="@color/text_primary"
+                android:buttonTint="@drawable/checkbox_gold"
                 android:padding="12dp"
                 android:layout_marginBottom="16dp"
                 android:focusable="true" />
 
-            <!-- Start Button -->
+            <!-- Start Button - Hero Action -->
             <Button
                 android:id="@+id/start_button"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="56dp"
                 android:text="@string/start_slideshow"
-                android:textSize="16sp"
-                android:textColor="#FFFFFF"
-                android:fontFamily="sans-serif-medium"
+                android:textSize="15sp"
+                android:textColor="#1A0F05"
+                android:fontFamily="sans-serif-bold"
+                android:letterSpacing="0.03"
                 android:background="@drawable/button_primary"
-                android:paddingVertical="14dp"
+                android:backgroundTint="@null"
+                android:gravity="center"
                 android:focusable="true" />
 
         </LinearLayout>

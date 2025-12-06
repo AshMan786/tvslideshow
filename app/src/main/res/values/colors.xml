@@ -1,8 +1,53 @@
 <resources>
-    <color name="background_gradient_start">#000000</color>
-    <color name="background_gradient_end">#DDDDDD</color>
-    <color name="fastlane_background">#0096a6</color>
-    <color name="search_opaque">#ffaa3f</color>
-    <color name="selected_background">#ffaa3f</color>
-    <color name="default_background">#3d3d3d</color>
+    <!-- ═══════════════════════════════════════════════════════════════════════
+         CINEMATIC LUXURY GALLERY - Color System
+         A warm, elegant palette inspired by premium photo galleries
+         and luxury cinema experiences
+         ═══════════════════════════════════════════════════════════════════════ -->
+
+    <!-- ─── Deep Obsidian Backgrounds ─── -->
+    <color name="background_primary">#0A0A0B</color>
+    <color name="background_secondary">#121214</color>
+    <color name="background_elevated">#1A1A1E</color>
+    <color name="background_card">#1E1E22</color>
+
+    <!-- ─── Warm Burgundy Undertones ─── -->
+    <color name="background_warm">#150F11</color>
+    <color name="background_warm_elevated">#1F1517</color>
+
+    <!-- ─── Golden Amber Accent System ─── -->
+    <color name="accent_gold">#D4A855</color>
+    <color name="accent_gold_bright">#E8C47C</color>
+    <color name="accent_gold_soft">#F5D799</color>
+    <color name="accent_gold_muted">#A68B4B</color>
+
+    <!-- ─── Rose Gold Highlights ─── -->
+    <color name="accent_rose">#E8B4B8</color>
+    <color name="accent_rose_soft">#F5D0D3</color>
+
+    <!-- ─── Warm Cream Whites ─── -->
+    <color name="text_primary">#FFFBF5</color>
+    <color name="text_secondary">#C4BEB5</color>
+    <color name="text_tertiary">#8A857D</color>
+    <color name="text_disabled">#5C5850</color>
+
+    <!-- ─── Glass & Overlay ─── -->
+    <color name="glass_background">#1AFFFFFF</color>
+    <color name="glass_border">#25FFFFFF</color>
+    <color name="glass_border_focus">#40D4A855</color>
+    <color name="overlay_dark">#E6000000</color>
+    <color name="overlay_medium">#99000000</color>
+
+    <!-- ─── Semantic Colors ─── -->
+    <color name="success">#7CB87C</color>
+    <color name="warning">#E8B64C</color>
+    <color name="error">#D46B6B</color>
+
+    <!-- ─── Legacy Compatibility ─── -->
+    <color name="background_gradient_start">#0A0A0B</color>
+    <color name="background_gradient_end">#1A1A1E</color>
+    <color name="fastlane_background">#D4A855</color>
+    <color name="search_opaque">#E8C47C</color>
+    <color name="selected_background">#D4A855</color>
+    <color name="default_background">#121214</color>
 </resources>

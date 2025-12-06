@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Main Settings Screen - Luxury Ambient Background -->
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Deep obsidian base -->
+    <item>
+        <shape android:shape="rectangle">
+            <solid android:color="@color/background_primary" />
+        </shape>
+    </item>
+
+    <!-- Warm golden glow - left side for content area -->
+    <item>
+        <shape android:shape="rectangle">
+            <gradient
+                android:type="radial"
+                android:gradientRadius="700dp"
+                android:centerX="0.7"
+                android:centerY="0.5"
+                android:startColor="#18D4A855"
+                android:endColor="#00000000" />
+        </shape>
+    </item>
+
+    <!-- Subtle rose accent - top right -->
+    <item>
+        <shape android:shape="rectangle">
+            <gradient
+                android:type="radial"
+                android:gradientRadius="400dp"
+                android:centerX="1.0"
+                android:centerY="0.0"
+                android:startColor="#10E8B4B8"
+                android:endColor="#00000000" />
+        </shape>
+    </item>
+
+    <!-- Bottom ambient glow -->
+    <item>
+        <shape android:shape="rectangle">
+            <gradient
+                android:type="radial"
+                android:gradientRadius="500dp"
+                android:centerX="0.5"
+                android:centerY="1.2"
+                android:startColor="#0CA68B4B"
+                android:endColor="#00000000" />
+        </shape>
+    </item>
+
+    <!-- Very subtle noise texture simulation via gradient -->
+    <item>
+        <shape android:shape="rectangle">
+            <gradient
+                android:type="linear"
+                android:angle="45"
+                android:startColor="#02FFFFFF"
+                android:endColor="#00000000" />
+        </shape>
+    </item>
+</layer-list>

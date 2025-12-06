@@ -1,51 +1,82 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!-- Cinematic Luxury TV Banner -->
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
-    <!-- Background gradient -->
+    <!-- Deep obsidian background with subtle gradient -->
     <item>
         <shape android:shape="rectangle">
             <gradient
                 android:type="linear"
                 android:angle="135"
-                android:startColor="#1a237e"
-                android:endColor="#0d1b2a" />
+                android:startColor="#0A0A0B"
+                android:centerColor="#121214"
+                android:endColor="#0A0A0B" />
             <corners android:radius="8dp" />
         </shape>
     </item>
 
-    <!-- Icon on left -->
+    <!-- Golden accent line at bottom -->
+    <item android:top="172dp">
+        <shape android:shape="rectangle">
+            <gradient
+                android:type="linear"
+                android:angle="0"
+                android:startColor="#00D4A855"
+                android:centerColor="#60D4A855"
+                android:endColor="#00D4A855" />
+            <corners
+                android:bottomLeftRadius="8dp"
+                android:bottomRightRadius="8dp" />
+            <size android:height="8dp" />
+        </shape>
+    </item>
+
+    <!-- Outer aperture ring - Gold -->
     <item
         android:left="24dp"
-        android:top="40dp"
-        android:bottom="40dp"
+        android:top="35dp"
+        android:bottom="35dp"
         android:right="200dp">
         <shape android:shape="oval">
             <stroke
-                android:width="2dp"
-                android:color="#4FC3F7" />
+                android:width="3dp"
+                android:color="#D4A855" />
             <solid android:color="#00000000" />
         </shape>
     </item>
 
+    <!-- Middle ring - Rose gold -->
     <item
-        android:left="36dp"
-        android:top="52dp"
-        android:bottom="52dp"
-        android:right="212dp">
+        android:left="38dp"
+        android:top="49dp"
+        android:bottom="49dp"
+        android:right="214dp">
         <shape android:shape="oval">
             <stroke
                 android:width="2dp"
-                android:color="#29B6F6" />
+                android:color="#E8B4B8" />
             <solid android:color="#00000000" />
         </shape>
     </item>
 
+    <!-- Inner lens - Bright gold -->
     <item
-        android:left="48dp"
-        android:top="64dp"
-        android:bottom="64dp"
-        android:right="224dp">
+        android:left="50dp"
+        android:top="61dp"
+        android:bottom="61dp"
+        android:right="226dp">
         <shape android:shape="oval">
-            <solid android:color="#03A9F4" />
+            <solid android:color="#E8C47C" />
+        </shape>
+    </item>
+
+    <!-- Title text area hint (actual text rendered by system) -->
+    <item
+        android:left="110dp"
+        android:top="60dp"
+        android:bottom="60dp"
+        android:right="20dp">
+        <shape android:shape="rectangle">
+            <solid android:color="#00000000" />
         </shape>
     </item>
 </layer-list>

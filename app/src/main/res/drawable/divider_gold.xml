@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Elegant Golden Divider -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+    <gradient
+        android:type="linear"
+        android:angle="0"
+        android:startColor="#00D4A855"
+        android:centerColor="#40D4A855"
+        android:endColor="#00D4A855" />
+    <size android:height="1dp" />
+</shape>

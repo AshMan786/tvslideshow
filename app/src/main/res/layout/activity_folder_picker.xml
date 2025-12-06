@@ -1,75 +1,148 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!-- Elegant Folder Browser -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:padding="32dp"
     android:background="@drawable/settings_background">
 
-    <TextView
-        android:layout_width="wrap_content"
+    <!-- Header Section -->
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/select_folder_title"
-        android:textSize="28sp"
-        android:textColor="#FFFFFF"
-        android:fontFamily="sans-serif-light"
-        android:layout_marginBottom="16dp" />
+        android:orientation="vertical"
+        android:paddingHorizontal="48dp"
+        android:paddingTop="32dp"
+        android:paddingBottom="24dp">
 
+        <!-- Title Row -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:layout_marginBottom="20dp">
+
+            <!-- Golden accent bar -->
+            <View
+                android:layout_width="4dp"
+                android:layout_height="32dp"
+                android:background="@color/accent_gold"
+                android:layout_marginEnd="16dp" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/select_folder_title"
+                android:textSize="28sp"
+                android:textColor="@color/text_primary"
+                android:fontFamily="sans-serif-light"
+                android:letterSpacing="0.02" />
+
+            <!-- Image count badge -->
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:background="@drawable/card_background"
+                android:paddingHorizontal="16dp"
+                android:paddingVertical="10dp">
+
+                <TextView
+                    android:id="@+id/image_count_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="14sp"
+                    android:textColor="@color/accent_gold"
+                    android:fontFamily="sans-serif-medium" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <!-- Current path display -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:background="@drawable/card_background"
+            android:padding="16dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Path:"
+                android:textSize="12sp"
+                android:textColor="@color/text_tertiary"
+                android:fontFamily="sans-serif-medium"
+                android:layout_marginEnd="12dp" />
+
+            <TextView
+                android:id="@+id/current_path_text"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:textSize="13sp"
+                android:textColor="@color/text_secondary"
+                android:singleLine="true"
+                android:ellipsize="start"
+                android:fontFamily="monospace" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <!-- Folder List -->
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:paddingHorizontal="48dp">
+
+        <ListView
+            android:id="@+id/folder_list"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/card_background"
+            android:divider="@drawable/divider_gold"
+            android:dividerHeight="1dp"
+            android:padding="12dp"
+            android:clipToPadding="false"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:listSelector="@drawable/list_item_background" />
+
+    </FrameLayout>
+
+    <!-- Footer with Select Button -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:gravity="center_vertical"
-        android:layout_marginBottom="16dp">
+        android:gravity="center"
+        android:paddingHorizontal="48dp"
+        android:paddingTop="24dp"
+        android:paddingBottom="32dp">
 
-        <TextView
-            android:id="@+id/current_path_text"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:textSize="14sp"
-            android:textColor="#80FFFFFF"
-            android:singleLine="true"
-            android:ellipsize="start"
-            android:fontFamily="monospace" />
-
-        <TextView
-            android:id="@+id/image_count_text"
+        <Button
+            android:id="@+id/select_folder_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:minWidth="240dp"
+            android:text="@string/select_this_folder"
             android:textSize="16sp"
-            android:textColor="#FFFFFF"
-            android:background="#CC000000"
-            android:padding="12dp"
-            android:layout_marginStart="16dp" />
+            android:textColor="#1A0F05"
+            android:fontFamily="sans-serif-bold"
+            android:letterSpacing="0.03"
+            android:background="@drawable/button_primary"
+            android:backgroundTint="@null"
+            android:paddingHorizontal="48dp"
+            android:paddingVertical="16dp"
+            android:focusable="true" />
 
     </LinearLayout>
-
-    <ListView
-        android:id="@+id/folder_list"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:background="@drawable/card_background"
-        android:divider="#20FFFFFF"
-        android:dividerHeight="1dp"
-        android:padding="8dp"
-        android:clipToPadding="false"
-        android:focusable="true"
-        android:focusableInTouchMode="true" />
-
-    <Button
-        android:id="@+id/select_folder_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:text="@string/select_this_folder"
-        android:textSize="18sp"
-        android:textColor="#FFFFFF"
-        android:background="@drawable/button_primary"
-        android:paddingHorizontal="48dp"
-        android:paddingVertical="16dp"
-        android:layout_marginTop="24dp"
-        android:focusable="true" />
 
 </LinearLayout>
