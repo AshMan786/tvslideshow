@@ -40,8 +40,9 @@ captures/
 .idea/
 
 # Keystore files
-#*.jks
-#*.keystore
+*.jks
+*.keystore
+keystore.properties
 
 # External native build folder
 .externalNativeBuild

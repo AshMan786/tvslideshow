@@ -67,29 +67,29 @@
             android:background="@drawable/settings_panel_background"
             android:paddingStart="40dp"
             android:paddingEnd="48dp"
-            android:paddingTop="32dp"
-            android:paddingBottom="32dp">
+            android:paddingTop="24dp"
+            android:paddingBottom="24dp">
 
             <!-- Section Title -->
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Settings"
-                android:textSize="24sp"
+                android:textSize="22sp"
                 android:textColor="@color/accent_gold"
                 android:fontFamily="sans-serif-light"
                 android:letterSpacing="0.1"
-                android:layout_marginBottom="8dp" />
+                android:layout_marginBottom="4dp" />
 
             <!-- Status text -->
             <TextView
                 android:id="@+id/status_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="13sp"
+                android:textSize="12sp"
                 android:textColor="@color/text_secondary"
                 android:fontFamily="sans-serif"
-                android:layout_marginBottom="24dp" />
+                android:layout_marginBottom="16dp" />
 
             <!-- Folder Selection Card -->
             <LinearLayout
@@ -97,8 +97,8 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:background="@drawable/card_background"
-                android:padding="20dp"
-                android:layout_marginBottom="16dp">
+                android:padding="16dp"
+                android:layout_marginBottom="12dp">
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -143,7 +143,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:layout_marginBottom="16dp">
+                android:layout_marginBottom="12dp">
 
                 <!-- Delay Card -->
                 <LinearLayout
@@ -232,41 +232,49 @@
 
             </LinearLayout>
 
-            <!-- Subfolders Option -->
-            <CheckBox
-                android:id="@+id/subfolders_checkbox"
+            <!-- Checkboxes Row -->
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/include_subfolders"
-                android:textSize="14sp"
-                android:textColor="@color/text_primary"
-                android:buttonTint="@drawable/checkbox_gold"
-                android:padding="12dp"
-                android:focusable="true" />
+                android:orientation="horizontal"
+                android:layout_marginBottom="12dp">
 
-            <!-- Mute Videos Option -->
-            <CheckBox
-                android:id="@+id/mute_videos_checkbox"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/mute_videos"
-                android:textSize="14sp"
-                android:textColor="@color/text_primary"
-                android:buttonTint="@drawable/checkbox_gold"
-                android:padding="12dp"
-                android:layout_marginBottom="16dp"
-                android:focusable="true" />
+                <CheckBox
+                    android:id="@+id/subfolders_checkbox"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/include_subfolders"
+                    android:textSize="13sp"
+                    android:textColor="@color/text_primary"
+                    android:buttonTint="@drawable/checkbox_gold"
+                    android:padding="8dp"
+                    android:focusable="true" />
+
+                <CheckBox
+                    android:id="@+id/mute_videos_checkbox"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/mute_videos"
+                    android:textSize="13sp"
+                    android:textColor="@color/text_primary"
+                    android:buttonTint="@drawable/checkbox_gold"
+                    android:padding="8dp"
+                    android:focusable="true" />
+
+            </LinearLayout>
 
             <!-- Start Button - Hero Action -->
             <Button
                 android:id="@+id/start_button"
                 android:layout_width="match_parent"
-                android:layout_height="56dp"
+                android:layout_height="50dp"
                 android:text="@string/start_slideshow"
-                android:textSize="15sp"
+                android:textSize="14sp"
                 android:textColor="#1A0F05"
                 android:fontFamily="sans-serif-bold"
-                android:letterSpacing="0.03"
+                android:letterSpacing="0.02"
                 android:background="@drawable/button_primary"
                 android:backgroundTint="@null"
                 android:gravity="center"
