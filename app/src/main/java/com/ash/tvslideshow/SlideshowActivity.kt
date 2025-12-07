@@ -4,6 +4,7 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Matrix
 import androidx.exifinterface.media.ExifInterface
+import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -14,12 +15,16 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.activity.ComponentActivity
+import androidx.media3.common.MediaItem
+import androidx.media3.common.Player
+import androidx.media3.exoplayer.ExoPlayer
+import androidx.media3.ui.PlayerView
 import java.io.File
 
 /**
- * Displays images in a slideshow with fade transitions.
+ * Displays images and videos in a slideshow with smooth transitions.
  * - UP: Show/hide controls overlay
- * - LEFT/RIGHT: Previous/next image
+ * - LEFT/RIGHT: Previous/next media
  * - CENTER/ENTER: Pause/Resume
  * - BACK: Return to settings
  */
@@ -27,34 +32,52 @@ class SlideshowActivity : ComponentActivity() {
 
     private lateinit var imageView1: ImageView
     private lateinit var imageView2: ImageView
+    private lateinit var playerView: PlayerView
     private lateinit var controlsOverlay: LinearLayout
-    private lateinit var imageCountText: TextView
+    private lateinit var mediaCountText: TextView
     private lateinit var delayText: TextView
     private lateinit var statusText: TextView
 
-    private var imageFiles: List<File> = emptyList()
-    private var displayOrder: MutableList<Int> = mutableListOf()  // Indices into imageFiles
-    private var currentOrderIndex = 0  // Position in displayOrder
+    private var exoPlayer: ExoPlayer? = null
+    private var mediaFiles: List<File> = emptyList()
+    private var displayOrder: MutableList<Int> = mutableListOf()
+    private var currentOrderIndex = 0
     private var isPlaying = true
     private var delayMillis = 5000L
-    private var useFirstImageView = true  // Track which ImageView is currently showing
+    private var useFirstImageView = true
     private var orderMode = SlideshowPrefs.ORDER_RANDOM
-    private var isTransitioning = false  // Prevent rapid input during transitions
-    private var currentBitmap1: Bitmap? = null  // Track bitmaps for proper recycling
+    private var isTransitioning = false
+    private var currentBitmap1: Bitmap? = null
     private var currentBitmap2: Bitmap? = null
+    private var muteVideos = false
+    private var isShowingVideo = false
 
-    private val fadeDuration = 800L  // milliseconds
-    private val inputDebounceMs = 300L  // Minimum time between user inputs
+    private val fadeDuration = 800L
+    private val inputDebounceMs = 300L
     private var lastInputTime = 0L
 
     private val handler = Handler(Looper.getMainLooper())
 
+    private val playerListener = object : Player.Listener {
+        override fun onPlaybackStateChanged(playbackState: Int) {
+            if (playbackState == Player.STATE_ENDED) {
+                // Video finished, advance to next media
+                if (isPlaying && !isFinishing) {
+                    handler.post {
+                        val nextIndex = getNextOrderIndex()
+                        showMedia(nextIndex)
+                    }
+                }
+            }
+        }
+    }
+
     private fun scheduleNextImage() {
-        if (isPlaying && imageFiles.isNotEmpty() && displayOrder.isNotEmpty() && !isFinishing) {
+        if (isPlaying && mediaFiles.isNotEmpty() && displayOrder.isNotEmpty() && !isFinishing && !isShowingVideo) {
             handler.postDelayed({
-                if (isPlaying && imageFiles.isNotEmpty() && displayOrder.isNotEmpty() && !isFinishing) {
+                if (isPlaying && mediaFiles.isNotEmpty() && displayOrder.isNotEmpty() && !isFinishing) {
                     val nextIndex = getNextOrderIndex()
-                    showImageWithCrossfade(nextIndex)
+                    showMedia(nextIndex)
                 }
             }, delayMillis)
         }
@@ -72,60 +95,66 @@ class SlideshowActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        // Keep screen on during slideshow - prevents sleep and screensaver
         window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
 
         setContentView(R.layout.activity_slideshow)
 
         imageView1 = findViewById(R.id.slideshow_image1)
         imageView2 = findViewById(R.id.slideshow_image2)
+        playerView = findViewById(R.id.video_player_view)
         controlsOverlay = findViewById(R.id.controls_overlay)
-        imageCountText = findViewById(R.id.image_count_text)
+        mediaCountText = findViewById(R.id.image_count_text)
         delayText = findViewById(R.id.delay_text)
         statusText = findViewById(R.id.slideshow_status_text)
 
-        // Initialize both image views
         imageView1.alpha = 1f
         imageView2.alpha = 0f
 
+        initializePlayer()
         loadSettings()
-        loadImages()
+        loadMedia()
 
-        if (imageFiles.isNotEmpty()) {
-            // Show first image immediately (no fade)
-            showFirstImage()
+        if (mediaFiles.isNotEmpty()) {
+            showFirstMedia()
             startSlideshow()
         } else {
-            statusText.text = "No images found"
+            statusText.text = "No media found"
             statusText.visibility = View.VISIBLE
         }
+    }
+
+    private fun initializePlayer() {
+        exoPlayer = ExoPlayer.Builder(this).build().apply {
+            addListener(playerListener)
+        }
+        playerView.player = exoPlayer
     }
 
     private fun loadSettings() {
         val seconds = SlideshowPrefs.getDelaySeconds(this)
         delayMillis = seconds * 1000L
+        muteVideos = SlideshowPrefs.getMuteVideos(this)
+        exoPlayer?.volume = if (muteVideos) 0f else 1f
     }
 
-    private fun loadImages() {
+    private fun loadMedia() {
         val folderPath = SlideshowPrefs.getFolderPath(this)
         val includeSubfolders = SlideshowPrefs.getIncludeSubfolders(this)
         orderMode = SlideshowPrefs.getDisplayOrder(this)
 
-        // Get files and sort by date if needed
-        var files = ImageLoader.getImageFiles(folderPath, includeSubfolders)
+        var files = MediaLoader.getMediaFiles(folderPath, includeSubfolders)
 
-        imageFiles = when (orderMode) {
+        mediaFiles = when (orderMode) {
             SlideshowPrefs.ORDER_DATE_ASC -> files.sortedBy { it.lastModified() }
             SlideshowPrefs.ORDER_DATE_DESC -> files.sortedByDescending { it.lastModified() }
-            else -> files  // Random will be handled by displayOrder
+            else -> files
         }
 
-        // Initialize display order
         initializeDisplayOrder()
     }
 
     private fun initializeDisplayOrder() {
-        displayOrder = (0 until imageFiles.size).toMutableList()
+        displayOrder = (0 until mediaFiles.size).toMutableList()
 
         if (orderMode == SlideshowPrefs.ORDER_RANDOM) {
             displayOrder.shuffle()
@@ -137,7 +166,6 @@ class SlideshowActivity : ComponentActivity() {
     private fun getNextOrderIndex(): Int {
         currentOrderIndex++
 
-        // If we've shown all images, reshuffle for random or loop for date order
         if (currentOrderIndex >= displayOrder.size) {
             if (orderMode == SlideshowPrefs.ORDER_RANDOM) {
                 displayOrder.shuffle()
@@ -158,19 +186,13 @@ class SlideshowActivity : ComponentActivity() {
         return displayOrder[currentOrderIndex]
     }
 
-    private fun getCurrentImageIndex(): Int {
-        return if (displayOrder.isNotEmpty()) displayOrder[currentOrderIndex] else 0
-    }
-
     private fun loadBitmap(file: File): Bitmap? {
         return try {
-            // Load with inSampleSize for large images to prevent OOM
             val options = BitmapFactory.Options().apply {
                 inJustDecodeBounds = true
             }
             BitmapFactory.decodeFile(file.absolutePath, options)
 
-            // Calculate sample size for images larger than 1920x1080
             var sampleSize = 1
             while (options.outWidth / sampleSize > 1920 || options.outHeight / sampleSize > 1080) {
                 sampleSize *= 2
@@ -182,7 +204,6 @@ class SlideshowActivity : ComponentActivity() {
             val bitmap = BitmapFactory.decodeFile(file.absolutePath, finalOptions)
                 ?: return null
 
-            // Check EXIF orientation and rotate if needed
             val rotation = getExifRotation(file)
             if (rotation != 0) {
                 rotateBitmap(bitmap, rotation)
@@ -219,115 +240,162 @@ class SlideshowActivity : ComponentActivity() {
         return rotated
     }
 
-    private fun showFirstImage() {
-        if (imageFiles.isEmpty() || displayOrder.isEmpty()) return
+    private fun showFirstMedia() {
+        if (mediaFiles.isEmpty() || displayOrder.isEmpty()) return
 
         currentOrderIndex = 0
-        val imageIndex = displayOrder[currentOrderIndex]
+        val mediaIndex = displayOrder[currentOrderIndex]
 
-        // Validate index is within bounds
-        if (imageIndex < 0 || imageIndex >= imageFiles.size) return
+        if (mediaIndex < 0 || mediaIndex >= mediaFiles.size) return
 
-        val file = imageFiles[imageIndex]
+        val file = mediaFiles[mediaIndex]
 
-        // Check file still exists
         if (!file.exists()) {
-            handleMissingFile(imageIndex)
+            handleMissingFile(mediaIndex)
             return
         }
 
-        val bitmap = loadBitmap(file)
-
-        if (bitmap != null) {
-            // Recycle old bitmap
-            currentBitmap1?.recycle()
-            currentBitmap1 = bitmap
-
-            imageView1.setImageBitmap(bitmap)
-            imageView1.alpha = 1f
-            imageView2.alpha = 0f
-            useFirstImageView = true
+        if (MediaLoader.isVideo(file)) {
+            showVideo(file)
+        } else {
+            showFirstImage(file)
         }
 
         updateOverlayInfo()
     }
 
+    private fun showFirstImage(file: File) {
+        val bitmap = loadBitmap(file) ?: return
+
+        stopVideo()
+
+        currentBitmap1?.recycle()
+        currentBitmap1 = bitmap
+
+        imageView1.setImageBitmap(bitmap)
+        imageView1.alpha = 1f
+        imageView2.alpha = 0f
+        imageView1.visibility = View.VISIBLE
+        imageView2.visibility = View.VISIBLE
+        useFirstImageView = true
+        isShowingVideo = false
+    }
+
+    private fun showVideo(file: File) {
+        isShowingVideo = true
+        isTransitioning = true
+
+        // Hide image views
+        imageView1.animate().alpha(0f).setDuration(fadeDuration / 2).start()
+        imageView2.animate().alpha(0f).setDuration(fadeDuration / 2).start()
+
+        // Show and start video
+        playerView.visibility = View.VISIBLE
+        playerView.alpha = 0f
+        playerView.animate().alpha(1f).setDuration(fadeDuration / 2).start()
+
+        exoPlayer?.let { player ->
+            player.volume = if (muteVideos) 0f else 1f
+            val mediaItem = MediaItem.fromUri(Uri.fromFile(file))
+            player.setMediaItem(mediaItem)
+            player.prepare()
+            player.playWhenReady = isPlaying
+        }
+
+        handler.postDelayed({
+            isTransitioning = false
+        }, fadeDuration)
+    }
+
+    private fun stopVideo() {
+        exoPlayer?.stop()
+        exoPlayer?.clearMediaItems()
+        playerView.visibility = View.GONE
+        isShowingVideo = false
+    }
+
     private fun handleMissingFile(index: Int) {
-        // Remove missing file from list and try next
         if (displayOrder.size > 1) {
             displayOrder.remove(index)
             if (currentOrderIndex >= displayOrder.size) {
                 currentOrderIndex = 0
             }
-            // Try to show next valid image
             if (displayOrder.isNotEmpty()) {
-                showImageWithCrossfade(displayOrder[currentOrderIndex])
+                showMedia(displayOrder[currentOrderIndex])
             }
         } else {
-            // No more images
-            statusText.text = "No images available"
+            statusText.text = "No media available"
             statusText.visibility = View.VISIBLE
             stopSlideshow()
         }
     }
 
-    private fun showImageWithCrossfade(index: Int) {
-        if (imageFiles.isEmpty() || displayOrder.isEmpty() || isFinishing) return
+    private fun showMedia(index: Int) {
+        if (mediaFiles.isEmpty() || displayOrder.isEmpty() || isFinishing) return
 
-        val imageIndex = index.coerceIn(0, imageFiles.lastIndex)
-        val file = imageFiles[imageIndex]
+        val mediaIndex = index.coerceIn(0, mediaFiles.lastIndex)
+        val file = mediaFiles[mediaIndex]
 
-        // Check file still exists (USB could be disconnected)
         if (!file.exists()) {
-            handleMissingFile(imageIndex)
+            handleMissingFile(mediaIndex)
             return
         }
 
+        if (MediaLoader.isVideo(file)) {
+            showVideo(file)
+        } else {
+            showImageWithCrossfade(file)
+        }
+
+        updateOverlayInfo()
+    }
+
+    private fun showImageWithCrossfade(file: File) {
         val bitmap = loadBitmap(file)
 
         if (bitmap == null) {
-            // Failed to load - skip to next image
             if (isPlaying) {
                 scheduleNextImage()
             }
             return
         }
 
-        isTransitioning = true
+        // Stop any video that might be playing
+        if (isShowingVideo) {
+            stopVideo()
+            imageView1.visibility = View.VISIBLE
+            imageView2.visibility = View.VISIBLE
+        }
 
-        // Determine which views to use
+        isTransitioning = true
+        isShowingVideo = false
+
         val showingView: ImageView
         val hiddenView: ImageView
 
         if (useFirstImageView) {
             showingView = imageView1
             hiddenView = imageView2
-            // Recycle the old bitmap that was in imageView2
             currentBitmap2?.recycle()
             currentBitmap2 = bitmap
         } else {
             showingView = imageView2
             hiddenView = imageView1
-            // Recycle the old bitmap that was in imageView1
             currentBitmap1?.recycle()
             currentBitmap1 = bitmap
         }
 
-        // Set the new image on the hidden view
         hiddenView.setImageBitmap(bitmap)
 
-        // Cancel any ongoing animations
         showingView.animate().cancel()
         hiddenView.animate().cancel()
 
-        // Crossfade: fade in hidden view, fade out showing view
         hiddenView.alpha = 0f
         hiddenView.animate()
             .alpha(1f)
             .setDuration(fadeDuration)
             .withEndAction {
                 isTransitioning = false
-                // Only schedule if activity is still valid
                 if (!isFinishing) {
                     scheduleNextImage()
                 }
@@ -339,35 +407,45 @@ class SlideshowActivity : ComponentActivity() {
             .setDuration(fadeDuration)
             .start()
 
-        // Swap which view is "active"
         useFirstImageView = !useFirstImageView
-
-        updateOverlayInfo()
     }
 
-    private fun showNextImage() {
-        if (imageFiles.isEmpty()) return
+    private fun showNextMedia() {
+        if (mediaFiles.isEmpty()) return
+        handler.removeCallbacksAndMessages(null)
         val nextIndex = getNextOrderIndex()
-        showImageWithCrossfade(nextIndex)
+        showMedia(nextIndex)
     }
 
-    private fun showPreviousImage() {
-        if (imageFiles.isEmpty()) return
+    private fun showPreviousMedia() {
+        if (mediaFiles.isEmpty()) return
+        handler.removeCallbacksAndMessages(null)
         val prevIndex = getPreviousOrderIndex()
-        showImageWithCrossfade(prevIndex)
+        showMedia(prevIndex)
     }
 
     private fun startSlideshow() {
         isPlaying = true
-        loadSettings()  // Reload in case settings changed
-        handler.removeCallbacksAndMessages(null)  // Clear all pending callbacks
-        scheduleNextImage()
+        loadSettings()
+        handler.removeCallbacksAndMessages(null)
+
+        if (isShowingVideo) {
+            exoPlayer?.playWhenReady = true
+        } else {
+            scheduleNextImage()
+        }
+
         updateOverlayInfo()
     }
 
     private fun stopSlideshow() {
         isPlaying = false
-        handler.removeCallbacksAndMessages(null)  // Clear all pending callbacks
+        handler.removeCallbacksAndMessages(null)
+
+        if (isShowingVideo) {
+            exoPlayer?.playWhenReady = false
+        }
+
         updateOverlayInfo()
     }
 
@@ -390,8 +468,20 @@ class SlideshowActivity : ComponentActivity() {
 
     private fun updateOverlayInfo() {
         val displayPosition = currentOrderIndex + 1
-        imageCountText.text = "Image $displayPosition of ${imageFiles.size}"
-        delayText.text = "Delay: ${delayMillis / 1000}s"
+        val currentFile = if (displayOrder.isNotEmpty() && currentOrderIndex < displayOrder.size) {
+            val idx = displayOrder[currentOrderIndex]
+            if (idx < mediaFiles.size) mediaFiles[idx] else null
+        } else null
+
+        val mediaType = if (currentFile != null && MediaLoader.isVideo(currentFile)) "Video" else "Image"
+        mediaCountText.text = "$mediaType $displayPosition of ${mediaFiles.size}"
+
+        if (isShowingVideo) {
+            delayText.text = "Playing video"
+        } else {
+            delayText.text = "Delay: ${delayMillis / 1000}s"
+        }
+
         statusText.text = if (isPlaying) "Playing" else "Paused"
         statusText.visibility = View.VISIBLE
     }
@@ -404,15 +494,13 @@ class SlideshowActivity : ComponentActivity() {
             }
             KeyEvent.KEYCODE_DPAD_LEFT -> {
                 if (canProcessInput() && !isTransitioning) {
-                    handler.removeCallbacksAndMessages(null)  // Cancel pending transitions
-                    showPreviousImage()
+                    showPreviousMedia()
                 }
                 true
             }
             KeyEvent.KEYCODE_DPAD_RIGHT -> {
                 if (canProcessInput() && !isTransitioning) {
-                    handler.removeCallbacksAndMessages(null)  // Cancel pending transitions
-                    showNextImage()
+                    showNextMedia()
                 }
                 true
             }
@@ -429,15 +517,15 @@ class SlideshowActivity : ComponentActivity() {
     override fun onPause() {
         super.onPause()
         handler.removeCallbacksAndMessages(null)
+        exoPlayer?.playWhenReady = false
     }
 
     override fun onResume() {
         super.onResume()
         loadSettings()
 
-        // Verify folder is still accessible (USB might have been disconnected)
         val folderPath = SlideshowPrefs.getFolderPath(this)
-        val folder = java.io.File(folderPath)
+        val folder = File(folderPath)
         if (!folder.exists() || !folder.canRead()) {
             statusText.text = "Folder not accessible"
             statusText.visibility = View.VISIBLE
@@ -445,8 +533,12 @@ class SlideshowActivity : ComponentActivity() {
             return
         }
 
-        if (isPlaying && imageFiles.isNotEmpty() && displayOrder.isNotEmpty()) {
-            scheduleNextImage()
+        if (isPlaying && mediaFiles.isNotEmpty() && displayOrder.isNotEmpty()) {
+            if (isShowingVideo) {
+                exoPlayer?.playWhenReady = true
+            } else {
+                scheduleNextImage()
+            }
         }
     }
 
@@ -454,22 +546,22 @@ class SlideshowActivity : ComponentActivity() {
         super.onDestroy()
         handler.removeCallbacksAndMessages(null)
 
-        // Cancel animations
         imageView1.animate().cancel()
         imageView2.animate().cancel()
 
-        // Clear image views
         imageView1.setImageBitmap(null)
         imageView2.setImageBitmap(null)
 
-        // Recycle bitmaps to free memory
         currentBitmap1?.recycle()
         currentBitmap1 = null
         currentBitmap2?.recycle()
         currentBitmap2 = null
 
-        // Clear references
-        imageFiles = emptyList()
+        exoPlayer?.removeListener(playerListener)
+        exoPlayer?.release()
+        exoPlayer = null
+
+        mediaFiles = emptyList()
         displayOrder.clear()
     }
 }

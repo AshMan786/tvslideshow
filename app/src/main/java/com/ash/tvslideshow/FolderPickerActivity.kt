@@ -248,10 +248,17 @@ class FolderPickerActivity : ComponentActivity() {
 
         pathText.text = path.absolutePath
 
-        // Count images in current folder
+        // Count media files in current folder
         try {
-            val imageCount = ImageLoader.getImageFiles(path.absolutePath).size
-            imageCountText.text = "$imageCount images in this folder"
+            val files = MediaLoader.getMediaFiles(path.absolutePath)
+            val imageCount = files.count { MediaLoader.isImage(it) }
+            val videoCount = files.count { MediaLoader.isVideo(it) }
+            imageCountText.text = when {
+                imageCount > 0 && videoCount > 0 -> "$imageCount images, $videoCount videos"
+                imageCount > 0 -> "$imageCount images"
+                videoCount > 0 -> "$videoCount videos"
+                else -> "No media files"
+            }
         } catch (e: Exception) {
             imageCountText.text = "Cannot read folder"
         }
@@ -287,7 +294,7 @@ class FolderPickerActivity : ComponentActivity() {
                 // Style the navigation and empty items differently
                 val text = getItem(position) ?: ""
                 when {
-                    text.startsWith("..") || text.startsWith("<") -> textView.setTextColor(0xFF4FC3F7.toInt())
+                    text.startsWith("..") || text.startsWith("<") -> textView.setTextColor(0xFFD4A855.toInt())
                     text.startsWith("(") -> textView.setTextColor(0xFF888888.toInt())
                     else -> textView.setTextColor(0xFFFFFFFF.toInt())
                 }

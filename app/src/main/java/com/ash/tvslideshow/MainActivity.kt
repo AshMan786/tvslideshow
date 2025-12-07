@@ -30,6 +30,7 @@ class MainActivity : ComponentActivity() {
     private lateinit var browseButton: Button
     private lateinit var delayEdit: EditText
     private lateinit var subfoldersCheckbox: CheckBox
+    private lateinit var muteVideosCheckbox: CheckBox
     private lateinit var orderSpinner: Spinner
     private lateinit var startButton: Button
     private lateinit var statusText: TextView
@@ -66,17 +67,23 @@ class MainActivity : ComponentActivity() {
         browseButton = findViewById(R.id.browse_button)
         delayEdit = findViewById(R.id.delay_edit)
         subfoldersCheckbox = findViewById(R.id.subfolders_checkbox)
+        muteVideosCheckbox = findViewById(R.id.mute_videos_checkbox)
         startButton = findViewById(R.id.start_button)
         statusText = findViewById(R.id.status_text)
 
         // Load saved settings
         delayEdit.setText(SlideshowPrefs.getDelaySeconds(this).toString())
         subfoldersCheckbox.isChecked = SlideshowPrefs.getIncludeSubfolders(this)
+        muteVideosCheckbox.isChecked = SlideshowPrefs.getMuteVideos(this)
 
-        // Save checkbox state when changed
+        // Save checkbox states when changed
         subfoldersCheckbox.setOnCheckedChangeListener { _, isChecked ->
             SlideshowPrefs.setIncludeSubfolders(this, isChecked)
             updateUI()
+        }
+
+        muteVideosCheckbox.setOnCheckedChangeListener { _, isChecked ->
+            SlideshowPrefs.setMuteVideos(this, isChecked)
         }
 
         // Setup order spinner
@@ -197,9 +204,9 @@ class MainActivity : ComponentActivity() {
 
         try {
             val includeSubfolders = SlideshowPrefs.getIncludeSubfolders(this)
-            val imageCount = ImageLoader.getImageFiles(path, includeSubfolders).size
-            if (imageCount == 0) {
-                statusText.text = "No images found in selected folder"
+            val mediaCount = MediaLoader.getMediaFiles(path, includeSubfolders).size
+            if (mediaCount == 0) {
+                statusText.text = "No images or videos found"
                 return
             }
 
@@ -222,13 +229,21 @@ class MainActivity : ComponentActivity() {
         val path = SlideshowPrefs.getFolderPath(this)
         if (path.isEmpty()) {
             folderPathText.text = "No folder selected"
-            statusText.text = "Select a folder containing images"
+            statusText.text = "Select a folder with images/videos"
         } else {
             folderPathText.text = path
             try {
                 val includeSubfolders = SlideshowPrefs.getIncludeSubfolders(this)
-                val imageCount = ImageLoader.getImageFiles(path, includeSubfolders).size
-                statusText.text = if (imageCount > 0) "Found $imageCount images" else "No images found"
+                val files = MediaLoader.getMediaFiles(path, includeSubfolders)
+                val imageCount = files.count { MediaLoader.isImage(it) }
+                val videoCount = files.count { MediaLoader.isVideo(it) }
+
+                statusText.text = when {
+                    imageCount > 0 && videoCount > 0 -> "Found $imageCount images, $videoCount videos"
+                    imageCount > 0 -> "Found $imageCount images"
+                    videoCount > 0 -> "Found $videoCount videos"
+                    else -> "No media found"
+                }
             } catch (e: Exception) {
                 statusText.text = "Cannot access folder"
             }

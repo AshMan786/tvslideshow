@@ -242,6 +242,18 @@
                 android:textColor="@color/text_primary"
                 android:buttonTint="@drawable/checkbox_gold"
                 android:padding="12dp"
+                android:focusable="true" />
+
+            <!-- Mute Videos Option -->
+            <CheckBox
+                android:id="@+id/mute_videos_checkbox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/mute_videos"
+                android:textSize="14sp"
+                android:textColor="@color/text_primary"
+                android:buttonTint="@drawable/checkbox_gold"
+                android:padding="12dp"
                 android:layout_marginBottom="16dp"
                 android:focusable="true" />
 
